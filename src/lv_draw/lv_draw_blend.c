@@ -265,16 +265,13 @@ static void fill_set_px(const lv_area_t * disp_area, lv_color_t * disp_buf,  con
 
     lv_disp_t * disp = _lv_refr_get_disp_refreshing();
 
-    /*Get the width of the `disp_area` it will be used to go to the next line*/
-    int32_t disp_w = lv_area_get_width(disp_area);
-
     int32_t x;
     int32_t y;
 
     if(mask_res == LV_DRAW_MASK_RES_FULL_COVER) {
         for(y = draw_area->y1; y <= draw_area->y2; y++) {
             for(x = draw_area->x1; x <= draw_area->x2; x++) {
-                disp->driver.set_px_cb(&disp->driver, (void *)disp_buf, disp_w, x, y, color, opa);
+                disp->driver.set_px_cb(&disp->driver, (void *)disp_buf, disp_area, x, y, color, opa);
             }
         }
     }
@@ -290,7 +287,7 @@ static void fill_set_px(const lv_area_t * disp_area, lv_color_t * disp_buf,  con
         for(y = draw_area->y1; y <= draw_area->y2; y++) {
             for(x = draw_area->x1; x <= draw_area->x2; x++) {
                 if(mask_tmp[x]) {
-                    disp->driver.set_px_cb(&disp->driver, (void *)disp_buf, disp_w, x, y, color,
+                    disp->driver.set_px_cb(&disp->driver, (void *)disp_buf, disp_area, x, y, color,
                                            (uint32_t)((uint32_t)opa * mask_tmp[x]) >> 8);
                 }
             }
@@ -656,9 +653,6 @@ static void map_set_px(const lv_area_t * disp_area, lv_color_t * disp_buf,  cons
 {
     lv_disp_t * disp = _lv_refr_get_disp_refreshing();
 
-    /*Get the width of the `disp_area` it will be used to go to the next line*/
-    int32_t disp_w = lv_area_get_width(disp_area);
-
     /*Get the width of the `draw_area` it will be used to go to the next line of the mask*/
     int32_t draw_area_w = lv_area_get_width(draw_area);
 
@@ -676,7 +670,7 @@ static void map_set_px(const lv_area_t * disp_area, lv_color_t * disp_buf,  cons
     if(mask_res == LV_DRAW_MASK_RES_FULL_COVER) {
         for(y = draw_area->y1; y <= draw_area->y2; y++) {
             for(x = draw_area->x1; x <= draw_area->x2; x++) {
-                disp->driver.set_px_cb(&disp->driver, (void *)disp_buf, disp_w, x, y, map_buf_tmp[x], opa);
+                disp->driver.set_px_cb(&disp->driver, (void *)disp_buf, disp_area, x, y, map_buf_tmp[x], opa);
             }
             map_buf_tmp += map_w;
         }
@@ -690,7 +684,7 @@ static void map_set_px(const lv_area_t * disp_area, lv_color_t * disp_buf,  cons
         for(y = draw_area->y1; y <= draw_area->y2; y++) {
             for(x = draw_area->x1; x <= draw_area->x2; x++) {
                 if(mask_tmp[x]) {
-                    disp->driver.set_px_cb(&disp->driver, (void *)disp_buf, disp_w, x, y, map_buf_tmp[x],
+                    disp->driver.set_px_cb(&disp->driver, (void *)disp_buf, disp_area, x, y, map_buf_tmp[x],
                                            (uint32_t)((uint32_t)opa * mask_tmp[x]) >> 8);
                 }
             }

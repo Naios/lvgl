@@ -99,8 +99,8 @@ typedef struct _disp_drv_t {
     /** OPTIONAL: Set a pixel in a buffer according to the special requirements of the display
      * Can be used for color format not supported in LittelvGL. E.g. 2 bit -> 4 gray scales
      * @note Much slower then drawing with supported color formats. */
-    void (*set_px_cb)(struct _disp_drv_t * disp_drv, uint8_t * buf, lv_coord_t buf_w, lv_coord_t x, lv_coord_t y,
-                      lv_color_t color, lv_opa_t opa);
+    void (*set_px_cb)(struct _disp_drv_t * disp_drv, uint8_t * buf, const lv_area_t * area,
+                      lv_coord_t x, lv_coord_t y, lv_color_t color, lv_opa_t opa);
 
     /** OPTIONAL: Called after every refresh cycle to tell the rendering and flushing time + the
      * number of flushed pixels */
